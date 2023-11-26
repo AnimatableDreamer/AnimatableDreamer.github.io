@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AnimatableDreamer: Text-Guided Non-rigid 3D Model Generation and Reconstruction with Canonical Score Distillation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">AnimatableDreamer: Text-Guided Non-rigid 3D Model Generation and Reconstruction with Canonical Score Distillation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <!-- <a href="https://.com">Anonymous</a><sup>1</sup>,</span> -->
+              <a >Anonymous Author</a><sup>1</sup></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Academe One</span>
+            <!-- <span class="author-block"><sup>2</sup>Academic Two</span> -->
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Text-to-3D model adaptations have advanced static 3D model quality, but sequential 3D model generation, particularly for animatable objects with large motions, is still scarce. Our work proposes  <span class="dnerf">AnimatableDreamer</span>, a text-to-4D generation framework capable of generating diverse categories of non-rigid objects while adhering to the object motions extracted from a monocular video. At its core, <span class="dnerf">AnimatableDreamer</span> is equipped with our novel optimization design dubbed Canonical Score Distillation (CSD), which simplifies the generation dimension from 4D to 3D by denoising over different frames in the time-varying camera spaces while conducting the distillation process in a unique canonical space shared per video. Concretely, CSD ensures that score gradients back-propagate to the canonical space through differentiable warping, hence guaranteeing the time-consistent generation and maintaining morphological plausibility across different poses. By lifting the 3D generator to 4D with warping functions, <span class="dnerf">AnimatableDreamer</span> offers a novel perspective on non-rigid 3D model generation and reconstruction. Besides, with inductive knowledge from a multi-view consistent diffusion model, CSD regularizes reconstruction from novel views, thus cyclically enhancing the generation process. Extensive experiments demonstrate the capability of our method in generating high-flexibility text-guided 3D models from the monocular video, while also showing improved reconstruction performance over typical non-rigid reconstruction methods.
+
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+<hr>
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-3">Monocular Videos</h2>
+      <p></p>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/cat-pikachu-0.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              Cat Pikachu
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/squirrel-0000.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              Squirrel
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/penguin-0001.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              Penguin
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/coco-0-0000.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              Cat Coco
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/yellowbird-0000.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              Bird
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/finch-0000.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              Finch
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/bladeagle.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              Bladeagle
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/roof.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              A 3D model of an adorable cottage with a thatched roof.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-3">Generated Animatable Models</h2>
+      <p></p>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-cat-pikachu-0-1all1logrgb-60ep-bearhat-0tnf-08sdst-gs30-f~1.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"A bear with red hat." </em></strong> &nbsp; <span style="font-size: 0.8em;">(Cat Pikachu)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-cat-pikachu-0-1all1logrgb-120ep-catarmour-0tnf-08sdst-bkbg-nft-f~1.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"A cat with armour." </em></strong> &nbsp; <span style="font-size: 0.8em;">(Cat Pikachu)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-cat-pikachu-0-240ep-robot-08sdst-0040~1.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"A robot cat." </em></strong>&nbsp; <span style="font-size: 0.8em;">(Cat Pikachu)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-cat-pikachu-0-1all1logrgb-60ep-Holstein-05sdst-bbg-gs20-f~1.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"Holstein." </em></strong> &nbsp; <span style="font-size: 0.8em;">(Cat Pikachu)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-squirrel-1all1logrgb-60ep-sweater-0tnf-05sdst-f.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"A squirrel with red sweater." </em></strong> &nbsp; <span style="font-size: 0.8em;">(Squirrel)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-squirrel-1all1logrgb-60ep-fox-05sdst-noneg-f.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"A fox." </em></strong> &nbsp; <span style="font-size: 0.8em;">(Squirrel)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-squirrel-1all1logrgb-60ep-Charmander-06sdst-nctf-f.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"Charmander." </em></strong>&nbsp; <span style="font-size: 0.8em;">(Squirrel)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-squirrel-1all1logrgb-120ep-Squirtle-06sdst-nctf-f.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"Squirtle." </em></strong> &nbsp; <span style="font-size: 0.8em;">(Squirrel)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-penguin-1-1all1logrgb-120ep-dinosaur-05sdst-nctf-13dist-f.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"A toy dinosaur." </em></strong>&nbsp; <span style="font-size: 0.8em;">(Penguin)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-penguin-1-1all1logrgb-60ep-steampunk-05sdst-nctf-13dist-gs50-f.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"A steampunk penguin." </em></strong> &nbsp; <span style="font-size: 0.8em;">(Penguin)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-rgbmove-penguin-1-1all1logrgb-120ep-doraemon-05sdst-nctf-13dist-gs40-f.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"Doraemon." </em></strong>&nbsp; <span style="font-size: 0.8em;">(Penguin)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"." </em></strong> &nbsp; <span style="font-size: 0.8em;">()</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"." </em></strong>&nbsp; <span style="font-size: 0.8em;">()</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"." </em></strong> &nbsp; <span style="font-size: 0.8em;">()</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"." </em></strong>&nbsp; <span style="font-size: 0.8em;">()</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong><em>"." </em></strong> &nbsp; <span style="font-size: 0.8em;">()</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/high-nerf.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              High-fidelity generated NeRFs.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/comp-nerf.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              Complex generated NeRFs.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+    
+</section>
+
+<!-- ----------------------- -->
+<section class="section">
+  <div class="container is-max-desktop">
+    
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-3">Reconstructed Animatable Models</h2>
+      <p></p>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-normalmove-squirrel-bob-60ep-05sdst-f.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong>Ours</strong> &nbsp; <span style="font-size: 0.8em;">(Squirrel)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-normalmove-squirrel-base-0120.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong>BANMo</strong> &nbsp; <span style="font-size: 0.8em;">(Squirrel)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-normalmove-cat-pikachu-0-bob-60ep-05sdst-f.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong>Ours</strong> &nbsp; <span style="font-size: 0.8em;">(Cat Pikachu)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <div class="columns is-centered has-text-centered">
+          <div class="column content">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/myvideos/concat-normalmove-cat-pikachu-0-control-f~1.mp4"
+                      type="video/mp4">
+            </video>
+            <p>
+              <strong>BANMo</strong> &nbsp; <span style="font-size: 0.8em;">(Cat Pikachu)</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            There are a lot of excellent works that are related to our works.
+          </p>
+          <p>
+            <a href="https://github.com/facebookresearch/banmo">BANMo: Building Animatable 3D Neural Models from Many Casual Videos</a>
+          </p>
+          <p>
+            <a href="https://lab4d-org.github.io/">A framework for 4D reconstruction from monocular videos</a>
+          </p>
+          <p>
+            <a href="https://mv-dream.github.io/">MVDream: Multi-view Diffusion for 3D Generation</a>
+          </p>
+          <p>
+            <a href="https://ml.cs.tsinghua.edu.cn/prolificdreamer/">ProlificDreamer: High-Fidelity and Diverse Text-to-3D Generation with Variational Score Distillation</a>
+          </p>
+          <p>
+            <a href="https://github.com/threestudio-project/threestudio">A unified framework for 3D content generation</a>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+
+</body>
+</html>
