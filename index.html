@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AnimatableDreamer: Text-Guided Non-rigid 3D Model Generation and Reconstruction with Canonical Score Distillation</title>
@@ -36,6 +37,9 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+  <script type="module">
+    import '@google/model-viewer';
+  </script>
 </head>
 <body>
 
@@ -63,6 +67,18 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <model-viewer autoplay="" ar="" shadow-intensity="1" src="static/meshes/squirrel.glb" auto-rotate="" camera-controls="" ar-status="not-presenting"></model-viewer>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+  </div>
+</section>
 
 
 <section class="section">
@@ -73,8 +89,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Text-to-3D model adaptations have advanced static 3D model quality, but sequential 3D model generation, particularly for animatable objects with large motions, is still scarce. Our work proposes  <span class="dnerf">AnimatableDreamer</span>, a text-to-4D generation framework capable of generating diverse categories of non-rigid objects while adhering to the object motions extracted from a monocular video. At its core, <span class="dnerf">AnimatableDreamer</span> is equipped with our novel optimization design dubbed Canonical Score Distillation (CSD), which simplifies the generation dimension from 4D to 3D by denoising over different frames in the time-varying camera spaces while conducting the distillation process in a unique canonical space shared per video. Concretely, CSD ensures that score gradients back-propagate to the canonical space through differentiable warping, hence guaranteeing the time-consistent generation and maintaining morphological plausibility across different poses. By lifting the 3D generator to 4D with warping functions, <span class="dnerf">AnimatableDreamer</span> offers a novel perspective on non-rigid 3D model generation and reconstruction. Besides, with inductive knowledge from a multi-view consistent diffusion model, CSD regularizes reconstruction from novel views, thus cyclically enhancing the generation process. Extensive experiments demonstrate the capability of our method in generating high-flexibility text-guided 3D models from the monocular video, while also showing improved reconstruction performance over typical non-rigid reconstruction methods.
-
+            Advances in 3D generation have facilitated sequential 3D model generation (a.k.a 4D generation), yet its application for animatable objects with large motion remains scarce. Our work proposes <span class="dnerf">AnimatableDreamer</span>, a text-to-4D generation framework capable of generating diverse categories of non-rigid objects on skeletons extracted from a monocular video. At its core, <span class="dnerf">AnimatableDreamer</span> is equipped with our novel optimization design dubbed Canonical Score Distillation (CSD), which lifts 2D diffusion for temporal consistent 4D generation. CSD, designed from a score gradient perspective, generates a canonical model with warp-robustness across different articulations. Notably, it also enhances the authenticity of bones and skinning by integrating inductive priors from a diffusion model. Furthermore, with multi-view distillation, CSD infers invisible regions, thereby improving the fidelity of monocular non-rigid reconstruction. Extensive experiments demonstrate the capability of our method in generating high-flexibility text-guided 3D models from the monocular video, while also showing improved reconstruction performance over existing non-rigid reconstruction methods.
           </p>
         </div>
       </div>
