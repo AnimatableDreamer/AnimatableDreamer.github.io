@@ -37,9 +37,14 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
-  <script type="module">
-    import '@google/model-viewer';
-  </script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
+  <style>
+    model-viewer {
+      width: 400px;
+      height: 200px;
+    }
+  </style> 
 </head>
 <body>
 
@@ -53,34 +58,78 @@
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <!-- <a href="https://.com">Anonymous</a><sup>1</sup>,</span> -->
-              <a >Anonymous Author</a><sup>1</sup></span>
+              <a >Anonymous Author</a><sup></sup></span>
           </div>
 
-          <div class="is-size-5 publication-authors">
+          <!-- <div class="is-size-5 publication-authors">
             <span class="author-block"><sup>1</sup>Academe One</span>
-            <!-- <span class="author-block"><sup>2</sup>Academic Two</span> -->
-          </div>
+            <span class="author-block"><sup>2</sup>Academic Two</span>
+          </div> -->
           
         </div>
       </div>
     </div>
+
+    <div class="column has-text-centered">
+      <div class="publication-links">
+        <!-- Code Link. -->
+        <span class="link-block">
+          <a href="https://github.com/AnimatableDreamer/AnimatableDreamer"
+             class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="fab fa-github"></i>
+            </span>
+            <span>Code</span>
+            </a>
+        </span>
+        <!-- Dataset Link. -->
+        <span class="link-block">
+          <a href="https://github.com/AnimatableDreamer/AnimatableDreamer"
+             class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="far fa-images"></i>
+            </span>
+            <span>Data</span>
+            </a>
+        <!-- PDF Link. -->
+        <span class="link-block">
+          <a href=""
+             class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="fas fa-file-pdf"></i>
+            </span>
+            <span>Paper</span>
+          </a>
+        </span>
+        <span class="link-block">
+          <a href=""
+             class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="ai ai-arxiv"></i>
+            </span>
+            <span>arXiv</span>
+          </a>
+        </span>
+      </div>
+
+    </div>
   </div>
 </section>
 
-<section class="section">
+
+<section class="hero teaser">
   <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <h2 class="title is-3">Extracted Skeletons</h2>
-      <p></p>
-    </div>
-    <!--/ Abstract. -->
-    <div class="column is-four-fifths">
-      <model-viewer autoplay="" ar="" shadow-intensity="1" src="static/meshes/squirrel.glb" auto-rotate="" camera-controls="" ar-status="not-presenting"></model-viewer>
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">AnimatableDreamer</span> turns monocular video to skeletion and text-guided 3D model.
+      </h2>
     </div>
   </div>
 </section>
-
 
 <section class="section">
   <div class="container is-max-desktop">
@@ -97,6 +146,145 @@
     </div>
     <!--/ Abstract. -->
 
+  </div>
+</section>
+<hr>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract -->
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-3">Extracted Skeletons</h2>
+    </div>
+    <!-- First row of Model viewers -->
+    <div class="columns" style="display: flex; justify-content: center; align-items: center;">
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/squirrel.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/squirrel_skel.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+    </div>
+    <div style="height: 20px;"></div>
+    <!-- Second row of Model viewers -->
+    <div class="columns" style="display: flex; justify-content: center; align-items: center;">
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/penguin.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/penguin_skel.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+    </div>
+    <div style="height: 20px;"></div>
+    <!-- 3 row of Model viewers -->
+    <div class="columns" style="display: flex; justify-content: center; align-items: center;">
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/pikachu.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/pikachu_skel.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+    </div>
+    <div style="height: 20px;"></div>
+    <!-- 4 row of Model viewers -->
+    <div class="columns" style="display: flex; justify-content: center; align-items: center;">
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/arm.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/arm_skel.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+    </div>
+    <div style="height: 20px;"></div>
+    <!-- 5 row of Model viewers -->
+    <div class="columns" style="display: flex; justify-content: center; align-items: center;">
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/hand.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+      <div style="flex: 1; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <model-viewer src="./static/meshes/hand_skel.glb" 
+        autoplay=""
+        auto-rotate=""
+        environment-image="./static/camera.hdr"
+        shadow-intensity="1"
+        orientation="0deg 180deg 270deg"
+        style="background: linear-gradient(#ffffff, #aaaaaa); overflow-x: hidden;"
+        camera-controls touch-action="pan-y">
+        </model-viewer>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -130,7 +318,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/gen_geo/concat-normalref-squirrel-1all1logrgb-120ep-Squirtle-06sdst-nctf-f.mp4"
+              <source src="./static/gen_geo/concat-normalref-squirrel-1all1logrgb-120ep-Squirtle-06sdst-nctf-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -146,7 +334,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/gen_geo/concat-normalref-squirrel-60ep-fox-08sdst-200res-optnew-1e5lr-frewarp-f.mp4"
+              <source src="./static/gen_geo/concat-normalref-squirrel-60ep-fox-08sdst-200res-optnew-1e5lr-frewarp-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -162,7 +350,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/gen_geo/concat-normalref-cat-pikachu-0-1all1logrgb-60ep-bearhat-0tnf-08sdst-gs30-f.mp4"
+              <source src="./static/gen_geo/concat-normalref-cat-pikachu-0-1all1logrgb-60ep-bearhat-0tnf-08sdst-gs30-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -178,7 +366,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/gen_geo/concat-normalref-cat-pikachu-0-1all1logrgb-60ep-Holstein-05sdst-bbg-gs20-f.mp4"
+              <source src="./static/gen_geo/concat-normalref-cat-pikachu-0-1all1logrgb-60ep-Holstein-05sdst-bbg-gs20-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -194,7 +382,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/gen_geo/concat-normalref-penguin-1-60ep-dinosaur-06sdst-nctf-12dist-gs20-200res-optnew-1e5lr-f.mp4"
+              <source src="./static/gen_geo/concat-normalref-penguin-1-60ep-dinosaur-06sdst-nctf-12dist-gs20-200res-optnew-1e5lr-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -210,7 +398,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/gen_geo/concat-normalref-penguin-1-1all1logrgb-60ep-steampunk-05sdst-nctf-13dist-gs50-f.mp4"
+              <source src="./static/gen_geo/concat-normalref-penguin-1-1all1logrgb-60ep-steampunk-05sdst-nctf-13dist-gs50-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -271,11 +459,12 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/myvideos/concat-rgbmove-coco-0-1all1logrgb-120ep-armour-0tnf-08sdst-bkbg-nft-f.mp4"
+              <source src="./static/myvideos/concat-rgbmove-finch-1all1logrgb-120ep-eaglecrown-0tnf-08sdst-bkbg-nft-0040.mp4"
                       type="video/mp4">
             </video>
             <p>
-              <strong><em>"A cat with armour." </em></strong>&nbsp; <span style="font-size: 0.8em;">(Cat Coco)</span>
+              <strong><em>"Eagle with crown." </em></strong> &nbsp; <span style="font-size: 0.8em;">(Finch)</span>
+            </p>
             </p>
           </div>
         </div>
@@ -287,7 +476,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/myvideos/arm-pine-1dist-05sdst-0040.mp4"
+              <source src="./static/myvideos/concat-rgbref-arm-pine-1dist-05sdst-0040~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -300,11 +489,11 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/myvideos/concat-rgbmove-finch-1all1logrgb-120ep-eaglecrown-0tnf-08sdst-bkbg-nft-0040.mp4"
+              <source src="./static/myvideos/concat-rgbmove-coco-0-1all1logrgb-120ep-armour-0tnf-08sdst-bkbg-nft-f.mp4"
                       type="video/mp4">
             </video>
             <p>
-              <strong><em>"Eagle with crown." </em></strong> &nbsp; <span style="font-size: 0.8em;">(Finch)</span>
+              <strong><em>"A cat with armour." </em></strong>&nbsp; <span style="font-size: 0.8em;">(Cat Coco)</span>
             </p>
           </div>
         </div>
@@ -490,7 +679,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/more_recon/concat-normalref-cat-pikachu-fg-bob-inst2-f.mp4"
+              <source src="./static/more_recon/concat-normalref-cat-pikachu-fg-bob-inst2-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -503,7 +692,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/more_recon/concat-normalref-arm-bob-60ep-05sdst-t-f.mp4"
+              <source src="./static/more_recon/concat-normalref-arm-bob-60ep-05sdst-t-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -519,7 +708,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/more_recon/concat-normalref-hand-base-0t-f.mp4"
+              <source src="./static/more_recon/concat-normalref-hand-base-0t-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -532,7 +721,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/more_recon/concat-normalref-knight1-base-0t-f.mp4"
+              <source src="./static/more_recon/concat-normalref-knight1-base-0t-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -548,7 +737,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/more_recon/concat-normalref-yellowbird-base-0t-f.mp4"
+              <source src="./static/more_recon/concat-normalref-yellowbird-base-0t-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
@@ -561,7 +750,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column content">
             <video id="matting-video" autoplay controls muted loop playsinline height="100%">
-              <source src="./static/more_recon/concat-normalref-finch-base-0t-f.mp4"
+              <source src="./static/more_recon/concat-normalref-finch-base-0t-f~1.mp4"
                       type="video/mp4">
             </video>
             <p>
